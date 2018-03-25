@@ -1,190 +1,235 @@
 
-# Filter and Map in Python
+# Map in Python
 
-### Learning Objectives
+### Introduction
 
-### Filtering Elements
-
-When discussing conditionals, we saw how an `if` statement could be combined with a for loop to return a subset of the array that meets certain conditions.  We do so by iterating through a list of elements and adding the element to a new list when they meet certain conditions.  For example, imagine we want to write a function that selects even numbers.
+In the last section, we saw how we select a subset of a list by iterating through a list of elements to select only those that match a certain criteria.  In this lesson, we learn how to use the `map` function not to select a subset of elements, but to alter each element in a similar manner.
 
 ### First solve it for one element
 
-Before determining how to categorize all elements in a list, let's focus on just answering whether one element is even.  We can do so by making use of the modulo operator, `%`.  The % returns the remainder of dividing a number by another.  For example:
+Imagine that we have a list of names. 
 
 
 ```python
-7 % 3
+names = ['Homer', 'Marge', 'Bart', 'Maggie', 'Lisa']
+```
+
+We would like to add the name `Simpson` to the end of each name.  Just like as we did with `filter`, we can start by writing a function that solves the problem for one element.
+
+
+```python
+def add_simpson(name):
+    return name + " Simpson"
+```
+
+
+```python
+add_simpson("Homer")
 ```
 
 
 
 
-    1
-
-
-
-Seven divided by three, is two with a remainder of one.  So the modulo operator returns the remainder, one.  Let's look at some other examples.  Six divides into three two times without a remainder, so the operator returns zero.
-
-
-```python
-6 % 3
-```
-
-
-
-
-    0
-
-
-
-And four divided by two also brings a remainder of zero.
-
-
-```python
-4 % 2
-```
-
-
-
-
-    0
-
-
-
-Whenever we follow the modulo operator with the number two, we are determining if a number is even.  If a number is even, then dividing the number by two brings a remainder of zero.  If odd, then dividing the number by two brings a remainder of one.  Ok let's write a function that checks if a number is even. 
-
-
-```python
-def is_even(number):
-    return number % 2 == 0
-```
-
-
-```python
-is_even(3) # False
-is_even(100) # True
-```
-
-
-
-
-    True
+    'Homer Simpson'
 
 
 
 ### Then solve for all
 
-So now we can iterate through the numbers one by one, and for each number, check if that number is even.  If it's even then append it to a new list of even numbers.
+So now we can iterate through the names one by one, and for each name perform the same operation -- add the last name of `"Simpson"`.
 
 
 ```python
-def select_even(elements):
-    selected = []
+def add_simpsons(elements):
+    altered = []
     for element in elements:
-        if is_even(element):
-            selected.append(element)
-    return selected
+        altered.append(add_simpson(element))
+    return altered
 ```
 
 
 ```python
-numbers = list(range(0, 11, 1))
-numbers
-```
-
-
-
-
-    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-
-
-
-```python
-select_even(numbers)
+simpsons = add_simpsons(names)
+simpsons
 ```
 
 
 
 
-    [0, 2, 4, 6, 8, 10]
+    ['Homer Simpson',
+     'Marge Simpson',
+     'Bart Simpson',
+     'Maggie Simpson',
+     'Lisa Simpson']
 
 
 
-### Find what's common
+So notice that unlike what we saw in filtering for elements, there is no `if` statement in this `for` loop.  Instead, the number of element in our output list is the same as the number of elements in our input list.  However, each one of those elements have been altered.
 
-Returning a subset of elements that meet a specific criteria is something commonly done in Python. And the procedure looks pretty much the same regardless of what we are selecting.  For example, let's now select words that end with `'ing'`.
+### Finding what's common
+
+As you may have guessed, using a for loop to alter each element by applying some operation is a common procedure in programming.  Let's write a function that derives the initials of each person's name.
 
 
 ```python
-def ends_ing(word):
-    return word.endswith('ing')
+def find_initial(name):
+    names = name.split(' ')
+    first_name = names[0]
+    last_name = names[1]
+    return first_name[0] + last_name[0]
+```
 
-def select_ing(elements):
-    selected = []
+
+```python
+find_initial(simpsons[0])
+```
+
+
+
+
+    'HS'
+
+
+
+
+```python
+def find_initials(elements):    
+    altered = []
     for element in elements:
-        if ends_ing(element):
-            selected.append(element)
-    return selected
+        altered.append(find_initial(element))
+    return altered
 
-words = ['camping', 'biking', 'sailed', 'swam']
-select_ing(words)
+find_initials(simpsons)
 ```
 
 
 
 
-    ['camping', 'biking']
+    ['HS', 'MS', 'BS', 'MS', 'LS']
 
 
 
-Notice that our two functions `select_ing` and `select_even` share a lot of similarity.  In fact, let's just highlight the differences.
+Our two functions, are quite similar.
 
 ```python
-def select_ing(elements):
-#     selected = []
+
+def add_simpsons(elements):
+#     altered = []
 #     for element in elements:
-        if ends_ing(element):
-#             selected.append(element)
-#     return selected
+        altered.append(add_simpson(element))
+#     return altered
 
-def select_even(elements):
-#     selected = []
+def find_initials(elements):    
+#     altered = []
 #     for element in elements:
-        if is_even(element):
-#             selected.append(element)
-#     return selected
-
+        altered.append(find_initial(element))
+#     return altered
 ```
 
-Essentially, the only thing different between the functions is the criteria of how we are selecting.  The filter function, allows us to filter for specific elements, so long as it knows the criteria and the elements. 
+The map function, allows us to apply the same operation to each element and return the list of elements receiving this operation. 
 
 
 ```python
-list(filter(is_even,numbers))
+list(map(add_simpson, names))
 ```
 
 
 
 
-    [0, 2, 4, 6, 8, 10]
+    ['Homer Simpson',
+     'Marge Simpson',
+     'Bart Simpson',
+     'Maggie Simpson',
+     'Lisa Simpson']
 
 
 
 
 ```python
-list(filter(ends_ing, words))
+list(map(find_initial, simpsons))
 ```
 
 
 
 
-    ['camping', 'biking']
+    ['HS', 'MS', 'BS', 'MS', 'LS']
 
 
 
-So for the `filter` function, we pass through a function has a truthy or falsy return value.  The function goes through each element, and passes that element into the criteria function.  If that criteria function returns a truthy value, the element is selected.  If not, the element is not selected. 
+So the map function goes through each element, and executes the altering function on the current element, the return value of the altering function is added as an element to the returned list.
+
+### Lambda functions
+
+Our functions like `add_simpson` and `find_initial` may work well as stand alone functions to alter a single name.  But Python recognizes that sometimes a programmer wishes to perform an operation once and almost throw it away.  The operation doesn't even need a named function.  Wrapping the operation in a function adds some degree of indirection.
+
+For that reason, we can use `lambda` functions. Let's use the `lambda` function to have all of the names say `"hi"`.
+
+
+```python
+list(map(lambda name: name + ' Simpson says hi.', names))
+```
+
+
+
+
+    ['Homer Simpson says hi.',
+     'Marge Simpson says hi.',
+     'Bart Simpson says hi.',
+     'Maggie Simpson says hi.',
+     'Lisa Simpson says hi.']
+
+
+
+So notice that using a lambda function in python works just like using a normal named function.  However, we can write the function on one line.  A lambda function is declared by writing the keyword `lambda` followed by the argument then the colon to mark the start of the function's body.  The end of the function body is indicated with a comma.
+
+
+```python
+list(map(lambda name: name + ' Simpson says bye.', names))
+```
+
+
+
+
+    ['Homer Simpson says bye.',
+     'Marge Simpson says bye.',
+     'Bart Simpson says bye.',
+     'Maggie Simpson says bye.',
+     'Lisa Simpson says bye.']
+
+
+
+Note that `lambda` functions can also be used with `filter`.  That's another case where we may only need a function once, and then can almost throw it away.
+
+
+```python
+list(filter(lambda name: name.startswith('M'),names))
+```
+
+
+
+
+    ['Marge', 'Maggie']
+
+
+
+With `filter`, an element is returned so long as the `lambda` function returns a truthy value.
+
+
+```python
+list(filter(lambda name: True,names))
+```
+
+
+
+
+    ['Homer', 'Marge', 'Bart', 'Maggie', 'Lisa']
+
+
+
+Just like filter returns each element for which the first function returns a truthy value.
 
 ### Summary
 
-In this section, we learned about the `filter` function.  The `filter` function selects those elements in a list that match a specific criteria.  The list of elements is provided as the second argument to filter.  The first argument is a function that specifies the criteria of how to select elements.  Each of the elements is passed to the function one by one and if the function returns true the element is selected.
+In this section, we learned about the `map` function.  The `map` function takes two arguments.  The second argument is the list of elements to be iterated through and operated on.  The first argument is an altering function that operates each element one by one by passing through the element as an argument and returning a value.  The return values of the altering function comprises of the elements of the newly returned list.    
+
+Then we ended by learning about lambda functions.  Lambda functions can be used with iterators like `filter` and `map` and can be defined in just one line.  We declare a lambda function with the keyword `lambda` followed by the argument, and then a colon to indicate the beginning of the body of the lambda function. 
