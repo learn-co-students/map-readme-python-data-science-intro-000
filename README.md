@@ -3,9 +3,9 @@
 
 ### Introduction
 
-In the last section, we saw how we select a subset of a list by iterating through a list of elements to select only those that match a certain criteria.  In this lesson, we learn how to use the `map` function not to select a subset of elements, but to alter each element in a similar manner.
+In the last section, we saw how we select a subset of a list by iterating through a list of elements to select only those that match a certain criteria.  In this lesson, we learn how to use the `map` function not to return a subset of elements, but to alter each element in a similar manner.
 
-### First solve it for one element
+### First Solve For One Element
 
 Imagine that we have a list of names. 
 
@@ -14,7 +14,7 @@ Imagine that we have a list of names.
 names = ['Homer', 'Marge', 'Bart', 'Maggie', 'Lisa']
 ```
 
-We would like to add the name `Simpson` to the end of each name.  Just like as we did with `filter`, we can start by writing a function that solves the problem for one element.
+We would like to add the name `Simpson` to the end of each name.  Just as we did with `filter`, we can start by writing a function that solves the problem for one element.
 
 
 ```python
@@ -34,9 +34,11 @@ add_simpson("Homer")
 
 
 
-### Then solve for all
+Great, our method `add_simpson` successfully takes in a string, `name`, and returns that string with the added last name, `Simpson`.
 
-So now we can iterate through the names one by one, and for each name perform the same operation -- add the last name of `"Simpson"`.
+### Then Solve For All
+
+Now we can iterate through the names one by one, and for each name we perform the same operation -- add the last name `"Simpson"`.
 
 
 ```python
@@ -64,7 +66,7 @@ simpsons
 
 
 
-So notice that unlike what we saw in filtering for elements, there is no `if` statement in this `for` loop.  Instead, the number of element in our output list is the same as the number of elements in our input list.  However, each one of those elements have been altered.
+So notice that unlike what we saw in filtering for elements, there is no `if` statement in this `for` loop.  Instead, the number of elements in our output list is the same as the number of elements in our input list.  However, each one of those elements has been altered.
 
 ### Finding what's common
 
@@ -81,7 +83,8 @@ def find_initial(name):
 
 
 ```python
-find_initial(simpsons[0])
+homer = simpsons[0]
+find_initial(homer)
 ```
 
 
@@ -126,7 +129,21 @@ def find_initials(elements):
 #     return altered
 ```
 
-The map function, allows us to apply the same operation to each element and return the list of elements receiving this operation. 
+The map function, allows us to apply the same operation to each element and return a new list of elements receiving the modified elements from this operation. 
+
+
+```python
+map(add_simpson, names)
+```
+
+
+
+
+    <map at 0x1114ca7f0>
+
+
+
+However, just as the `filter` function returns a filter object, the `map` function returns a map object. So, in order to get our desired list back, we need to coerce the map object to a list:
 
 
 ```python
@@ -156,7 +173,7 @@ list(map(find_initial, simpsons))
 
 
 
-So the map function goes through each element, and executes the altering function on the current element, the return value of the altering function is added as an element to the returned list.
+So the map function goes through each element and executes the altering function on the current element. Then the return value of the altering function is added as an element to the new list, which is then returned after we coerce the map object to a list.
 
 ### Lambda functions
 
@@ -226,10 +243,10 @@ list(filter(lambda name: True,names))
 
 
 
-Just like filter returns each element for which the first function returns a truthy value.
+So if the function, or the lambda function always returns `True` then the `filter` function does not return a subset of the collection but the entire collection.
 
 ### Summary
 
-In this section, we learned about the `map` function.  The `map` function takes two arguments.  The second argument is the list of elements to be iterated through and operated on.  The first argument is an altering function that operates each element one by one by passing through the element as an argument and returning a value.  The return values of the altering function comprises of the elements of the newly returned list.    
+In this section, we learned about the `map` function which takes in two arguments. The first argument is the altering function, which operates on each element by passing through the element as an argument and returning a value. The second argument is the list of elements to be iterated through and operated on. The return values of the altering function are appended to a new list, which is returned after we coerce our map object into a list.
 
-Then we ended by learning about lambda functions.  Lambda functions can be used with iterators like `filter` and `map` and can be defined in just one line.  We declare a lambda function with the keyword `lambda` followed by the argument, and then a colon to indicate the beginning of the body of the lambda function. 
+Then we finished by learning about lambda functions. Lambda functions can be used with iterators like `filter` and `map` and can be defined in just one line.  We declare a lambda function with the keyword `lambda` followed by the argument, and then a colon to indicate the beginning of the body of the lambda function. 
