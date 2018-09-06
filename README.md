@@ -1,6 +1,11 @@
 
 # Map in Python
 
+### Objectives
+
+* Understand how `map` works in python for mapping a given function to each element of an iterable.
+* Differentiate between map and filter functions and identify suitable uses cases for each
+
 ### Introduction
 
 In the last section, we saw how we select a subset of a list by iterating through a list of elements to select only those that match a certain criteria.  In this lesson, we learn how to use the `map` function not to return a subset of elements, but to alter each element in a similar manner.
@@ -115,7 +120,6 @@ find_initials(simpsons)
 Our two functions, are quite similar.
 
 ```python
-
 def add_simpsons(elements):
 #     altered = []
 #     for element in elements:
@@ -129,7 +133,18 @@ def find_initials(elements):
 #     return altered
 ```
 
+### Map Function
+
 The map function, allows us to apply the same operation to each element and return a new list of elements receiving the modified elements from this operation. 
+
+A `map()` function is defined in python like this:
+
+```python
+map(Function, Sequence)
+
+```
+
+Let's use the map function with `add_simpson` defined above.
 
 
 ```python
@@ -139,7 +154,7 @@ map(add_simpson, names)
 
 
 
-    <map at 0x1114ca7f0>
+    <map at 0x10eda6860>
 
 
 
@@ -161,6 +176,8 @@ list(map(add_simpson, names))
 
 
 
+Similarly, we can pass `simpsons` list with `find_initial` to `map` and get the desired output as shown below.
+
 
 ```python
 list(map(find_initial, simpsons))
@@ -175,78 +192,40 @@ list(map(find_initial, simpsons))
 
 So the map function goes through each element and executes the altering function on the current element. Then the return value of the altering function is added as an element to the new list, which is then returned after we coerce the map object to a list.
 
-### Lambda functions
+`map`, just like `filter`, is built into python is always available. It is also computationally more efficient than a manually coded for loop. 
 
-Our functions like `add_simpson` and `find_initial` may work well as stand alone functions to alter a single name.  But Python recognizes that sometimes a programmer wishes to perform an operation once and almost throw it away.  The operation doesn't even need a named function.  Wrapping the operation in a function adds some degree of indirection.
+`map` can be used in more advance ways e.g. given multiple sequence arguments, it sends items taken form sequences in parallel as distinct arguments to the function. Let's see this through an example below.
 
-For that reason, we can use `lambda` functions. Let's use the `lambda` function to have all of the names say `"hi"`.
+The `pow` built-in python function takes in two numbers as arguments and calculates the result by setting second number as power of first number. Let's see this in action.
 
 
 ```python
-list(map(lambda name: name + ' Simpson says hi.', names))
+pow(2,4)
 ```
 
 
 
 
-    ['Homer Simpson says hi.',
-     'Marge Simpson says hi.',
-     'Bart Simpson says hi.',
-     'Maggie Simpson says hi.',
-     'Lisa Simpson says hi.']
+    16
 
 
 
-So notice that using a lambda function in python works just like using a normal named function.  However, we can write the function on one line.  A lambda function is declared by writing the keyword `lambda` followed by the argument then the colon to mark the start of the function's body.  The end of the function body is indicated with a comma.
+So 2 to the power 4 is 16 as seen above. `map` allows us to pass `pow` function along with two lists as arguments to calculate the powers of elements from first list to elements of second list as shown below:
 
 
 ```python
-list(map(lambda name: name + ' Simpson says bye.', names))
+list(map(pow, [2, 4, 8], [3, 5, 7]))
 ```
 
 
 
 
-    ['Homer Simpson says bye.',
-     'Marge Simpson says bye.',
-     'Bart Simpson says bye.',
-     'Maggie Simpson says bye.',
-     'Lisa Simpson says bye.']
+    [8, 1024, 2097152]
 
 
 
-Note that `lambda` functions can also be used with `filter`.  That's another case where we may only need a function once, and then can almost throw it away.
-
-
-```python
-list(filter(lambda name: name.startswith('M'),names))
-```
-
-
-
-
-    ['Marge', 'Maggie']
-
-
-
-With `filter`, an element is returned so long as the `lambda` function returns a truthy value.
-
-
-```python
-list(filter(lambda name: True,names))
-```
-
-
-
-
-    ['Homer', 'Marge', 'Bart', 'Maggie', 'Lisa']
-
-
-
-So if the function, or the lambda function always returns `True` then the `filter` function does not return a subset of the collection but the entire collection.
+This shows that with multiple sequences, `map` expects an N-argument function for N sequences i.e. `pow` requires two arguments and map uses use two lists for mapping elements. 
 
 ### Summary
 
 In this section, we learned about the `map` function which takes in two arguments. The first argument is the altering function, which operates on each element by passing through the element as an argument and returning a value. The second argument is the list of elements to be iterated through and operated on. The return values of the altering function are appended to a new list, which is returned after we coerce our map object into a list.
-
-Then we finished by learning about lambda functions. Lambda functions can be used with iterators like `filter` and `map` and can be defined in just one line.  We declare a lambda function with the keyword `lambda` followed by the argument, and then a colon to indicate the beginning of the body of the lambda function. 
